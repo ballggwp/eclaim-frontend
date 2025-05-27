@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* globals.css */
+@import "tailwindcss";
+/* now write your utility classes… */
+
 
 :root {
   --max-width: 1100px;

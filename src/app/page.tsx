@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { useProtected } from '../lib/api';
 import FormCard from '../components/FormCard';
-import HeroBanner from '../components/HeroBanner';
+import Navbar from '@/components/Navbar';
 type Form = {
   formId: string;
   company: string;
@@ -31,11 +31,14 @@ export default function OnProgressPage() {
   if (error)          return <p className="text-red-600">Error: {error.message}</p>;
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <HeroBanner />
+    <main>
+        <Navbar/>
+        <div className="grid grid-cols-2 gap-4">
       {forms?.map(f => (
         <FormCard key={f.formId} form={f} token={token} mutate={mutate!} />
       ))}
     </div>
+    </main>
+    
   );
 }

@@ -77,7 +77,12 @@ export default function SignInPage() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="bg-white p-8 rounded-2xl  w-full max-w-md max-h-[400px]"></div>
+
+          <div className="mb-1 text-sm font-medium text-gray-500 flex flex-row items-center gap-x-2">
+            <span>New to Massage?</span> 
+            <Link href="/api/auth/signup" className="text-blue-600 hover:underline">Create an Account</Link>
+          </div>
+
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200"

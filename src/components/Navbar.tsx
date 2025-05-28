@@ -35,8 +35,8 @@ export default function TopMenu() {
                 }
 
                 <div className="flex flex-row gap-0">
-                    <TopMenuItem title='My Reservation' pageRef='/myreservation' />
-                    <TopMenuItem title='All Review' pageRef='/myreview' />
+                    <TopMenuItem title='create new form' pageRef='/newform' />
+                    <TopMenuItem title='history' pageRef='/history' />
                 </div>
             </div>
 
@@ -44,7 +44,7 @@ export default function TopMenu() {
             <div className="flex-grow"></div>
 
             <div className='w-[90px]'>
-                <TopMenuItem title='Reservation' pageRef='/reservation' />
+                <TopMenuItem title='Approve' pageRef='/approve' />
             </div>
             <div className='w-[70px]'>
                 <TopMenuItem title='Home' pageRef='/' />

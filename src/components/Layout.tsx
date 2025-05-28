@@ -1,13 +1,14 @@
-import React, { ReactNode } from 'react';
-import Navbar from './Navbar';
+// src/app/layout.tsx
+"use client";
 
-interface LayoutProps { children: ReactNode; }
+import { SessionProvider } from "next-auth/react";
 
-export default function Layout({ children }: LayoutProps) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      <main className="p-6">{children}</main>
-    </div>
+    <html>
+      <body>
+        <SessionProvider>{children}</SessionProvider>
+      </body>
+    </html>
   );
 }

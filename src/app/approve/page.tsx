@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useProtected } from '../../lib/api';
+import { useProtected } from '../../libs/api';
 import FormPage from '../../components/FormPage';
 
 export default function ApprovePage() {

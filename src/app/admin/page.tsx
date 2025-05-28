@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useProtected } from '../../lib/api';
+import { useProtected } from '../../libs/api';
 import { PageHeader }   from '../../components/PageHeader';
 import FormCard         from '../../components/FormCard';
 

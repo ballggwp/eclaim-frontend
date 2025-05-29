@@ -13,10 +13,21 @@ interface Factory {
   companyId: string;
   address: string;
 }
+interface Approver {
+  userId: string;
+  name: string;
+  role: string;
+}
+interface User {
+  userId: string
+  name: string
+  role: string
+}
 
 export default function CreateInsuranceFormPage() {
   const { data: session } = useSession();
-
+  const [users, setUsers] = useState<User[]>([])
+  const [approvers, setApprovers] = useState<User[]>([])
   // dynamic data
   const [companies, setCompanies] = useState<Company[]>([]);
   const [factories, setFactories] = useState<Factory[]>([]);
@@ -75,18 +86,29 @@ useEffect(() => {
 // 2. Whenever company selection changes: fetch factories
 useEffect(() => {
   if (!formData.company) {
-    setFactories([]);
+    setFactories([]);        // or whatever your empty-state is
     return;
   }
+  
   fetch(`http://localhost:5000/api/factories?company=${formData.company}`)
-    .then(r => {
-      if (!r.ok) throw new Error(`Status ${r.status}`);
-      return r.json();
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
     })
-    .then(setFactories)
-    .catch(console.error);
+    .then(data => setFactories(data))
+    .catch(err => console.error('Error fetching factories:', err));
 }, [formData.company]);
 
+useEffect(() => {
+    fetch('http://localhost:5000/api/users')
+      .then(res => res.json())
+      .then((all: User[]) => {
+        setUsers(all)
+        // approvers are just those with an APPROVER role
+        setApprovers(all.filter(u => u.role.startsWith('APPROVER')))
+      })
+      .catch(console.error)
+  }, [])
 
 
   const handleChange = (
@@ -104,6 +126,7 @@ useEffect(() => {
         const fac = factories.find((f) => f.id === value);
         updated.address = fac?.address || updated.address;
       }
+      
       // calculate total days
       if (name === "startDate" || name === "endDate") {
         if (updated.startDate && updated.endDate) {
@@ -119,7 +142,7 @@ useEffect(() => {
       return updated;
     });
   };
-
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!session?.user?.id) {
@@ -128,7 +151,7 @@ useEffect(() => {
     }
     const payload = { ...formData, creatorId: session.user.id, status: "DRAFT" };
     try {
-      const res = await fetch("/api/insuranceForms", {
+      const res = await fetch("/api/newform", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -463,38 +486,59 @@ useEffect(() => {
         {/* Approvals */}
         <div>
           <label className="block mb-1">ผู้แจ้งจัดหา (หน่วยงานต้นสังกัด)</label>
-          <input
-            readOnly
-            name="requester"
-            value={formData.requester}
-            onChange={handleChange}
-            className="w-full border rounded p-2"
-            placeholder="-- เลือกผู้แจ้งจัดหา --"
-          />
+          <select
+  id="requester"
+  name="requester"
+  value={formData.requester}
+  onChange={handleChange}
+  required
+  className="w-full border rounded p-2"
+>
+  <option value="" disabled>— Select requester —</option>
+  {users.map(u => (
+    <option key={u.userId} value={u.userId}>
+      {u.name} ({u.role})
+    </option>
+  ))}
+</select>
         </div>
         <div>
           <label className="block mb-1">ผู้อนุมัติของหน่วยงานต้นสังกัด</label>
-          <input
-            readOnly
-            name="approver"
-            value={formData.approver}
-            onChange={handleChange}
-            className="w-full border rounded p-2"
-            placeholder="-- เลือกผู้อนุมัติ --"
-          />
+          <select
+  id="approver"
+  name="approver"
+  value={formData.approver}
+  onChange={handleChange}
+  required
+  className="w-full border rounded p-2"
+>
+  <option value="" disabled>— Select approver —</option>
+  {users.map(u => (
+    <option key={u.userId} value={u.userId}>
+      {u.name} ({u.role})
+    </option>
+  ))}
+</select>
         </div>
         <div>
           <label className="block mb-1">
             ผู้รับอนุญาตด้านการเบิกกลุ่มงานย่อย (รับทราบและตรวจสอบ)
           </label>
-          <input
-            readOnly
-            name="inspector"
-            value={formData.inspector}
-            onChange={handleChange}
-            className="w-full border rounded p-2"
-            placeholder="-- เลือกผู้รับอนุญาต --"
-          />
+          <select
+  id="inspector"
+  name="inspector"
+  value={formData.inspector}
+  onChange={handleChange}
+  required
+  className="w-full border rounded p-2"
+>
+  <option value="" disabled>— Select inspector —</option>
+  {users.map(u => (
+    <option key={u.userId} value={u.userId}>
+      {u.name} ({u.role})
+    </option>
+  ))}
+</select>
         </div>
 
         <button

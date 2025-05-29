@@ -26,7 +26,7 @@ export default function CreateInsuranceFormPage() {
     company: "",
     factory: "",
     address: "",
-    policyType: "จัดเก่าใหม่",
+    policyType: "จัดทำใหม่",
     insuredLocation: "",
     projectName: "",
     insuranceType: "",

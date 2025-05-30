@@ -223,7 +223,7 @@ useEffect(() => {
 
         {/* Address */}
         <div>
-          <label className="block mb-1">ที่อยู่</label>
+          <label className="block mb-1">ที่อยู่สถานที่เอาประกันภัย</label>
           <input
             name="address"
             value={formData.address}
@@ -234,15 +234,7 @@ useEffect(() => {
 
         {/* Location & Project */}
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-1">ที่ตั้งสถานที่เอาประกันภัย</label>
-            <input
-              name="insuredLocation"
-              value={formData.insuredLocation}
-              onChange={handleChange}
-              className="w-full border rounded p-2"
-            />
-          </div>
+          
           <div>
             <label className="block mb-1">ชื่อโครงการ (ถ้ามี)</label>
             <input
